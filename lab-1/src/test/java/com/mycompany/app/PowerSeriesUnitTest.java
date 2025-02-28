@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.lang.IllegalArgumentException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,8 +15,15 @@ import org.junit.jupiter.api.Test;
 import com.mycompany.app.powerseries.PowerSeries;
 
 public class PowerSeriesUnitTest {
-    static List<Double> eighteenExpectedTanCoefficients;
-    final List<Double> expectedCoefficients = new ArrayList<>();
+    private static List<Double> eighteenExpectedTanCoefficients;
+    private final List<Double> expectedCoefficients = new ArrayList<>();
+    private int countOfCoefficients;
+    private int roundSignNumber;
+    private double delta;
+
+    private double calculateDelta(int precision) {
+        return 1 / Math.pow(10, precision);
+    }
 
     @BeforeAll
     public static void setUpTanCoefficients() {
@@ -24,10 +33,10 @@ public class PowerSeriesUnitTest {
     }
 
     @Test
-    public void givenFewTerms_whenExecuteTanExpansion_thenReturnCoefficients() {
-        final int countOfCoefficients = 3;
-        final int roundSignNumber = 5;
-        final double delta = 1 / Math.pow(10, roundSignNumber);
+    public void givenFewCoefficients_whenExecuteTanExpansion_thenReturnCoefficients() {
+        countOfCoefficients = 3;
+        roundSignNumber = 5;
+        delta = calculateDelta(roundSignNumber);
 
         List<Double> actualCoefficients = PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
 
@@ -47,8 +56,28 @@ public class PowerSeriesUnitTest {
 
     @Disabled
     @Test
-    public void givenMinimalTerms_whenExecuteTanExpansion_thenReturnCoefficients() {
+    public void givenMinimalCoefficients_whenExecuteTanExpansion_thenReturnCoefficients() {
         
+    }
+
+    @Test
+    public void givenIncorrectPrecision_whenExecuteTanExpansion_thenThrowsException() {
+        countOfCoefficients = 5;
+        roundSignNumber = -1;
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
+        }); 
+    }
+
+    @Test
+    public void givenIncorrectCoefficientCount_whenExecuteTanExpansion_thenThrowsException() {
+        countOfCoefficients = 40;
+        roundSignNumber = 3;
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
+        });
     }
 
     @AfterEach

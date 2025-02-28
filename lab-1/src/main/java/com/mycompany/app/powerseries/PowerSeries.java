@@ -8,9 +8,25 @@ import com.mycompany.app.util.MathUtil;
 
 public class PowerSeries {
     
-    public static final double ZERO_COEFFICIENT = 0.0;
+    private static final double ZERO_COEFFICIENT = 0.0;
+    private static final int MAX_COEFFICIENT_COUNT = 18;
+    private static final int MIN_COEFFICIENT_COUNT = 1;
+    private static final int MAX_PRECISION = 10;
+    private static final int MIN_PRECISION = 1;
 
     public static List<Double> getTanExpansionCoefficients(int countOfCoefficients, int roundSignNumber) {
+        
+        if (countOfCoefficients < MIN_COEFFICIENT_COUNT || countOfCoefficients > MAX_COEFFICIENT_COUNT) {
+            throw new IllegalArgumentException(
+                String.format("Error: Count of expansion coefficients should be between %d and %d.",
+                    MIN_COEFFICIENT_COUNT, MAX_COEFFICIENT_COUNT));
+        }
+        if (roundSignNumber < MIN_PRECISION || roundSignNumber > MAX_PRECISION) {
+            throw new IllegalArgumentException(
+                String.format("Error: Round Sign Number should be between %d and %d",
+                    MIN_PRECISION, MAX_PRECISION));
+        }
+
         List<Double> coefficients = new ArrayList<>();
         final int countOfTerms = (countOfCoefficients + 1) / 2;
         
