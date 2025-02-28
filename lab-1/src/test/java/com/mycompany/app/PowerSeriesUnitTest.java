@@ -9,7 +9,6 @@ import java.lang.IllegalArgumentException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.powerseries.PowerSeries;
@@ -54,10 +53,92 @@ public class PowerSeriesUnitTest {
         );
     }
 
-    @Disabled
     @Test
     public void givenMinimalCoefficients_whenExecuteTanExpansion_thenReturnCoefficients() {
-        
+        countOfCoefficients = 1;
+        roundSignNumber = 6;
+        delta = calculateDelta(roundSignNumber);
+
+        List<Double> actualCoefficients = PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
+
+        expectedCoefficients.addAll(eighteenExpectedTanCoefficients.subList(0, countOfCoefficients));
+
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(expectedCoefficients.size(), actualCoefficients.size(),
+                "The size of coefficient lists should be equal"),
+            () -> {
+                for (int i = 0; i < expectedCoefficients.size(); i++) {
+                    Assertions.assertEquals(expectedCoefficients.get(i), actualCoefficients.get(i), delta,
+                        String.format("Coefficient at index %d does not match", i));
+                }
+            }
+        );
+    }
+
+    @Test
+    public void givenMaximalCoefficients_whenExecuteTanExpansion_thenReturnCoefficients() {
+        countOfCoefficients = 18;
+        roundSignNumber = 8;
+        delta = calculateDelta(roundSignNumber);
+
+        List<Double> actualCoefficients = PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
+
+        expectedCoefficients.addAll(eighteenExpectedTanCoefficients.subList(0, countOfCoefficients));
+
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(expectedCoefficients.size(), actualCoefficients.size(),
+                "The size of coefficient lists should be equal"),
+            () -> {
+                for (int i = 0; i < expectedCoefficients.size(); i++) {
+                    Assertions.assertEquals(expectedCoefficients.get(i), actualCoefficients.get(i), delta,
+                        String.format("Coefficient at index %d does not match", i));
+                }
+            }
+        );
+    }
+
+    @Test
+    public void givenHighPrecision_whenExecuteTanExpansion_thenReturnCoefficients() {
+        countOfCoefficients = 10;
+        roundSignNumber = 10;
+        delta = calculateDelta(roundSignNumber);
+
+        List<Double> actualCoefficients = PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
+
+        expectedCoefficients.addAll(eighteenExpectedTanCoefficients.subList(0, countOfCoefficients));
+
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(expectedCoefficients.size(), actualCoefficients.size(),
+                "The size of coefficient lists should be equal"),
+            () -> {
+                for (int i = 0; i < expectedCoefficients.size(); i++) {
+                    Assertions.assertEquals(expectedCoefficients.get(i), actualCoefficients.get(i), delta,
+                        String.format("Coefficient at index %d does not match", i));
+                }
+            }
+        );
+    }
+
+    @Test
+    public void givenLowPrecision_whenExecuteTanExpansion_thenReturnCoefficients() {
+        countOfCoefficients = 11;
+        roundSignNumber = 2;
+        delta = calculateDelta(roundSignNumber);
+
+        List<Double> actualCoefficients = PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
+
+        expectedCoefficients.addAll(eighteenExpectedTanCoefficients.subList(0, countOfCoefficients));
+
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(expectedCoefficients.size(), actualCoefficients.size(),
+                "The size of coefficient lists should be equal"),
+            () -> {
+                for (int i = 0; i < expectedCoefficients.size(); i++) {
+                    Assertions.assertEquals(expectedCoefficients.get(i), actualCoefficients.get(i), delta,
+                        String.format("Coefficient at index %d does not match", i));
+                }
+            }
+        );
     }
 
     @Test
@@ -81,7 +162,7 @@ public class PowerSeriesUnitTest {
     }
 
     @AfterEach
-    public void cleanUpActualCoefficients() {
+    public void cleanUpExpectedCoefficients() {
         expectedCoefficients.clear();
     }
 }
