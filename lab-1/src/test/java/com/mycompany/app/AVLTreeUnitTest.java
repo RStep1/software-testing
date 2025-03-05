@@ -2,20 +2,16 @@ package com.mycompany.app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.avltree.AVLTree;
 
 public class AVLTreeUnitTest {
-
-    private static AVLTree expectedAvlTree;
-
-    @BeforeAll
-    public static void setUpTree() {
-        expectedAvlTree = new AVLTree();
-    }
 
     private AVLTree createTree(int key, AVLTree leftTree, AVLTree rightTree) {
         AVLTree tree = new AVLTree();
@@ -51,13 +47,163 @@ public class AVLTreeUnitTest {
     }
 
     @Test
-    public void givenNumbersSequentially_whenInsert() {
+    public void givenSingleKey_whenInsertInEmptyTree_thenRootEquals() {
+        final int key = 3;
         AVLTree actualAvlTree = new AVLTree();
-        actualAvlTree.insert(3);
-        actualAvlTree.insert(1);
-        actualAvlTree.insert(2);
-        AVLTree expectedAvlTree = createTree(2, createTree(1, null, null), createTree(3, null, null));
+        actualAvlTree.insert(key);
+
+        AVLTree expectedAvlTree = createTree(key, null, null);
 
         assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    @Test
+    public void givenSingleKey_whenInsertInLeftSubtreeRoot_thenTreeEquals() {
+        final int keyToInsert = 10;
+        AVLTree actualAvlTree = createTree(17, null, createTree(20, null, null));
+        actualAvlTree.insert(keyToInsert);
+
+        AVLTree expectedAvlTree = createTree(17, createTree(keyToInsert, null, null), createTree(20, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    @Test
+    public void givenSingleKey_whenInsertInRightSubtreeRoot_thenTreeEquals() {
+        final int keyToInsert = 8;
+        AVLTree actualAvlTree = createTree(7, createTree(5, null, null), null);
+        actualAvlTree.insert(keyToInsert);
+
+        AVLTree expectedAvlTree = createTree(7, createTree(5, null, null), createTree(keyToInsert, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+    
+    @Test
+    public void givenLeftLeftCase_whenInsert_thenTreeEquals() {
+        final int keyToInsert = 1;
+        AVLTree actualAvlTree = createTree(5, createTree(3, createTree(2, null, null), createTree(4, null, null)), createTree(6, null, null));
+        actualAvlTree.insert(keyToInsert);
+
+        AVLTree expectedAvlTree = createTree(3, 
+            createTree(2, createTree(1, null, null), null),
+            createTree(5,
+                createTree(4, null, null), createTree(6, null, null)));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    @Test
+    public void givenRightRightCase_whenInsert_thenTreeEquals() {
+        final int keyToInsert = 7;
+        AVLTree actualAvlTree = createTree(3, null, createTree(5, null, null));
+        actualAvlTree.insert(keyToInsert);
+
+        AVLTree expectedAvlTree = createTree(5, createTree(3, null, null), createTree(7, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    
+    @Test
+    public void givenLeftRightCase_whenInsert_thenTreeEquals() {
+        final int keyToInsert = 4;
+        AVLTree actualAvlTree = createTree(5, createTree(3, null, null), null);
+        actualAvlTree.insert(keyToInsert);
+
+        AVLTree expectedAvlTree = createTree(4, createTree(3, null, null), createTree(5, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    @Test
+    public void givenRightLeftCase_whenInsert_thenTreeEquals() {
+        final int keyToInsert = 4;
+        AVLTree actualAvlTree = createTree(3, null, createTree(5, null, null));
+        actualAvlTree.insert(keyToInsert);
+
+        AVLTree expectedAvlTree = createTree(4, createTree(3, null, null), createTree(5, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    @Test
+    public void givenExistingKey_whenInsert_thenThrowsRuntimeException() {
+        final int keyToInsert = 11;
+        AVLTree actualAvlTree = createTree(10, null, createTree(11, null, null));
+
+        assertThrows(RuntimeException.class, () -> {
+            actualAvlTree.insert(keyToInsert);
+        });
+    }
+
+    @Test
+    public void whenDeleteFromEmptyTree_thenTreeEmpty() {
+        
+    }
+
+    @Test
+    public void whenDeleteLeafWithoutChildren_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteLeafWithLeftChild_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteLeafWithRightChild_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteBothLeafs_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteLeftLeftCase_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteRightRightCase_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteLeftRightCase_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenDeleteRightLeftCase_thenTreeEquals() {
+
+    }
+
+    @Test
+    public void whenFindInEmptyTree_thenNull() {
+
+    }
+
+    @Test
+    public void whenFindExistingRoot_thenSucceed() {
+
+    }
+
+    @Test
+    public void whenFindInLeftSubtree_thenSucceed() {
+
+    }
+
+    @Test
+    public void whenFindInRightSubtree_thenSucceed() {
+
+    }
+
+    @Test
+    public void whenFindNonexistingKey_thenGetNull() {
+
     }
 }

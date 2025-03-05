@@ -148,7 +148,7 @@ public class PowerSeriesUnitTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             PowerSeries.getTanExpansionCoefficients(countOfCoefficients, roundSignNumber);
-        }); 
+        });
     }
 
     @Test
