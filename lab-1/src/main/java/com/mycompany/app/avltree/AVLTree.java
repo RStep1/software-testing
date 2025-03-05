@@ -7,8 +7,36 @@ public class AVLTree {
         Node left;
         Node right;
 
-        Node(int key) {
+        public Node(int key) {
             this.key = key;
+        }
+
+        public int getKey() {
+            return this.key;
+        }
+
+        public int getHeight() {
+            return this.height;
+        }
+
+        public Node getLeft() {
+            return this.left;
+        }
+
+        public Node getRight() {
+            return this.right;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        public void setLeft(Node left) {
+            this.left = left;
+        }
+
+        public void setRight(Node right) {
+            this.right = right;
         }
     }
 
@@ -35,6 +63,10 @@ public class AVLTree {
 
     public Node getRoot() {
         return root;
+    }
+
+    public void setRoot(Node root) {
+        this.root = root;
     }
 
     public int height() {

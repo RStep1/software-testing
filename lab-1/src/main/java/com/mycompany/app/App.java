@@ -13,5 +13,9 @@ public class App {
         final int roundSingNumber = 5;
         List<Double> coefficients = PowerSeries.getTanExpansionCoefficients(countOfTerms, roundSingNumber);
         coefficients.forEach(x -> System.out.print(String.format(Locale.US, "%." + roundSingNumber + "f ", x)));
+
+
+        AVLTree avlTree = new AVLTree();
+        
     }
 }
