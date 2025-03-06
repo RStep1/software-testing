@@ -139,47 +139,123 @@ public class AVLTreeUnitTest {
 
     @Test
     public void whenDeleteFromEmptyTree_thenTreeEmpty() {
+        final int keyToDelete = 1;
+        AVLTree actualAvlTree = new AVLTree();
+        actualAvlTree.delete(keyToDelete);
+
+        AVLTree expectedAvlTree = new AVLTree();
         
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
+    }
+
+    @Test
+    public void whenDeleteNonexistingKeyFromNotEmptyTree_thenTreeEquals () {
+        AVLTree actualAvlTree = createTree(4, createTree(3, null, null), createTree(8, null, null));
+        actualAvlTree.delete(1);
+
+        AVLTree expectedAvlTree = createTree(4, createTree(3, null, null), createTree(8, null, null));
+        
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteLeafWithoutChildren_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(2, createTree(1, null, null), createTree(3, null, null));
+        actualAvlTree.delete(3);
 
+        AVLTree expectedAvlTree = createTree(2, createTree(1, null, null), null);
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteLeafWithLeftChild_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(5,
+            createTree(1, null, null),
+            createTree(8, createTree(6, null, null), null));
+        actualAvlTree.delete(8);
 
+        AVLTree expectedAvlTree = createTree(5,
+            createTree(1, null, null),
+            createTree(6, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteLeafWithRightChild_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(1, null, createTree(3, null, null));
+        actualAvlTree.delete(3);
 
+        AVLTree expectedAvlTree = createTree(1, null, null);
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteBothLeafs_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(2, createTree(1, null, null), createTree(3, null, null));
+        actualAvlTree.delete(2);
 
+        AVLTree expectedAvlTree = createTree(3, createTree(1, null, null), null);
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteLeftLeftCase_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(5, 
+            createTree(3, createTree(2, null, null), null),
+            createTree(6, null, null));
+        actualAvlTree.delete(6);
 
+        AVLTree expectedAvlTree = createTree(3, 
+            createTree(2, null, null),
+            createTree(5, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteRightRightCase_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(3,
+            createTree(1, null, null),
+            createTree(5, null, createTree(7, null, null)));
+        actualAvlTree.delete(1);
 
+        AVLTree expectedAvlTree = createTree(5, 
+            createTree(3, null, null),
+            createTree(7, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteLeftRightCase_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(5,
+            createTree(3, null, createTree(4, null, null)),
+            createTree(6, null, null));
+        actualAvlTree.delete(6);
 
+        AVLTree expectedAvlTree = createTree(4, 
+            createTree(3, null, null),
+            createTree(5, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
     public void whenDeleteRightLeftCase_thenTreeEquals() {
+        AVLTree actualAvlTree = createTree(3,
+            createTree(2, null, null),
+            createTree(5, createTree(4, null, null), null));
+        actualAvlTree.delete(2);
 
+        AVLTree expectedAvlTree = createTree(4, 
+            createTree(3, null, null),
+            createTree(5, null, null));
+
+        assertTreeEquals(expectedAvlTree, actualAvlTree);
     }
 
     @Test
