@@ -5,9 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.mycompany.app.avltree.AVLTree;
@@ -29,22 +26,6 @@ public class AVLTreeUnitTest {
     
         return tree;
     }
-
-    // private AVLTree.Node createTree(int key, AVLTree.Node leftNode, AVLTree.Node rightNode) {
-    //     AVLTree tree = new AVLTree();
-    
-    //     AVLTree.Node rootNode = tree.new Node(key);
-    //     rootNode.setLeft(leftNode != null ? leftNode : null);
-    //     rootNode.setRight(rightNode != null ? rightNode : null);
-    
-    //     int leftHeight = leftNode != null ? leftNode.getHeight() : -1;
-    //     int rightHeight = rightNode != null ? rightNode.getHeight() : -1;
-    //     rootNode.setHeight(1 + Math.max(leftHeight, rightHeight));
-    
-    //     tree.setRoot(rootNode);
-    
-    //     return tree.getRoot
-    // }
 
     private void assertTreeEquals(AVLTree expected, AVLTree actual) {
         assertTreeEquals(expected.getRoot(), actual.getRoot());
