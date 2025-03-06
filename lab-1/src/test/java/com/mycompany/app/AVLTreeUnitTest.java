@@ -2,6 +2,7 @@ package com.mycompany.app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -28,6 +29,22 @@ public class AVLTreeUnitTest {
     
         return tree;
     }
+
+    // private AVLTree.Node createTree(int key, AVLTree.Node leftNode, AVLTree.Node rightNode) {
+    //     AVLTree tree = new AVLTree();
+    
+    //     AVLTree.Node rootNode = tree.new Node(key);
+    //     rootNode.setLeft(leftNode != null ? leftNode : null);
+    //     rootNode.setRight(rightNode != null ? rightNode : null);
+    
+    //     int leftHeight = leftNode != null ? leftNode.getHeight() : -1;
+    //     int rightHeight = rightNode != null ? rightNode.getHeight() : -1;
+    //     rootNode.setHeight(1 + Math.max(leftHeight, rightHeight));
+    
+    //     tree.setRoot(rootNode);
+    
+    //     return tree.getRoot
+    // }
 
     private void assertTreeEquals(AVLTree expected, AVLTree actual) {
         assertTreeEquals(expected.getRoot(), actual.getRoot());
@@ -260,26 +277,64 @@ public class AVLTreeUnitTest {
 
     @Test
     public void whenFindInEmptyTree_thenNull() {
+        AVLTree avlTree = new AVLTree();
+        AVLTree.Node actualNode = avlTree.find(1);
 
+        assertNull(actualNode);
     }
 
     @Test
     public void whenFindExistingRoot_thenSucceed() {
+        AVLTree avlTree = createTree(4, createTree(2, null, null), null);
+        AVLTree.Node actualNode = avlTree.find(4);
 
+        AVLTree.Node expectedNode = createTree(4, createTree(2, null, null), null).getRoot();
+
+        assertTreeEquals(expectedNode, actualNode);
     }
 
     @Test
     public void whenFindInLeftSubtree_thenSucceed() {
+        AVLTree avlTree = createTree(6,
+            createTree(3,
+                null,
+                createTree(4, null, null)),
+            createTree(10, null, null));
+        AVLTree.Node actualNode = avlTree.find(3);
 
+        AVLTree.Node expectedNode = createTree(3, null, createTree(4, null, null)).getRoot();
+
+        assertTreeEquals(expectedNode, actualNode);
     }
 
     @Test
     public void whenFindInRightSubtree_thenSucceed() {
+        AVLTree avlTree = createTree(4,
+            createTree(2, null, null),
+            createTree(6,
+                createTree(5, null, null),
+                createTree(8, null, null)));
+        AVLTree.Node actualNode = avlTree.find(6);
 
+        AVLTree.Node expectedNode = createTree(6,
+            createTree(5, null, null),
+            createTree(8, null, null))
+            .getRoot();
+
+        assertTreeEquals(expectedNode, actualNode);
     }
 
     @Test
     public void whenFindNonexistingKey_thenGetNull() {
+        AVLTree avlTree = createTree(4,
+            createTree(2, 
+                createTree(1, null, null),
+                null),
+            createTree(6,
+                createTree(5, null, null),
+                createTree(8, null, null)));
+        AVLTree.Node actualNode = avlTree.find(10);
 
+        assertNull(actualNode);
     }
 }
