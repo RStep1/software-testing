@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.mycompany.app.avltree.AVLTree;
 
+@ExtendWith(LoggingTestLifecycleExtension.class)
 public class AVLTreeUnitTest {
 
     private AVLTree createTree(int key, AVLTree leftTree, AVLTree rightTree) {

@@ -1,0 +1,1 @@
+mvn test -Dtest=com.mycompany.app.PowerSeriesUnitTest,com.mycompany.app.MathUtilUnitTest
