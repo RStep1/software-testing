@@ -1,1 +1,1 @@
-mvn test -Dtest=com.mycompany.app.AVLTreeUnitTest
+mvn test -Dtest=com.mycompany.app.avltree.AVLTreeUnitTest
