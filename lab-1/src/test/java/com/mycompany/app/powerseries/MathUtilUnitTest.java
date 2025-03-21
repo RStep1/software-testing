@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.mycompany.app.powerseries;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;

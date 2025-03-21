@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.mycompany.app.powerseries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +13,6 @@ import java.lang.IllegalArgumentException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import com.mycompany.app.powerseries.PowerSeries;
 
 public class PowerSeriesUnitTest {
     private static List<Double> eighteenExpectedTanCoefficients;

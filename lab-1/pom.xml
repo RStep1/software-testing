@@ -160,7 +160,7 @@
                 <param>com.mycompany.app.avltree.*</param>
               </targetClasses>
               <targetTests>
-                <param>com.mycompany.app.AVLTreeUnitTest</param>
+                <param>com.mycompany.app.avltree.AVLTreeUnitTest</param>
 	            </targetTests>
               <outputFormats>
                 <outputFormat>XML</outputFormat>

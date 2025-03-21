@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package com.mycompany.app.avltree;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import com.mycompany.app.avltree.AVLTree;
+import com.mycompany.app.LoggingTestLifecycleExtension;
 
 @ExtendWith(LoggingTestLifecycleExtension.class)
 public class AVLTreeUnitTest {
