@@ -1,21 +1,8 @@
 package com.mycompany;
 
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Alert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.WebElement;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.junit.jupiter.api.Disabled;
 
 import com.mycompany.base.TestBase;
 import com.mycompany.pages.HomePage;
@@ -24,7 +11,7 @@ import com.mycompany.util.AppUrls;
 
 
 public class LoginTest extends TestBase {
-    
+
     @Test
     public void givenValidCredentials_whenUserLogsIn_thenShouldNavigateToHomePage() {
         LoginPage loginPage = new LoginPage(this.getDriver());
