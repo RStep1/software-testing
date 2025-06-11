@@ -54,9 +54,10 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    public void clearFormFields() {
+    public LoginPage clearFormFields() {
         emailField.clear();
         passwordField.clear();
+        return this;
     }
 
     public LoginPage clickLogin() {
