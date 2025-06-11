@@ -1,42 +1,30 @@
 package com.mycompany.pages;
 
-import java.time.Duration;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.mycompany.util.AppUrls;
 
-public class LoginPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
-    
-    @FindBy(xpath = "//*[@id=\"username\"]")
+public class LoginPage extends BasePage {
+
+    @FindBy(id = "username")
     private WebElement emailField;
-    
-    @FindBy(xpath = "//*[@id=\"password\"]")
+
+    @FindBy(id = "password")
     private WebElement passwordField;
-    
+
     @FindBy(xpath = "//*[@id=\"javascript-content\"]/div[2]/main/div/div/form/button")
     private WebElement loginButton;
-    
+
     @FindBy(xpath = "//*[@id=\"javascript-content\"]/div[2]/main/div/div/form/div[4]/div/p/span")
     private WebElement loginErrorMessage;
 
-    @FindBy(xpath = "//*[@id=\"uc-center-container\"]/div[2]/div/div/div/button[2]")
-    private WebElement acceptAllPrivacyButton;
-    
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver);
         driver.get(AppUrls.LOGIN);
-        PageFactory.initElements(driver, this);
     }
 
     public LoginPage acceptAllPrivacy() {
@@ -49,47 +37,49 @@ public class LoginPage {
                 By.cssSelector("#uc-center-container > div.sc-eBMEME.gMirTG > div > div > div > button.sc-dcJsrY.eLOIWU")
             );
             acceptButton.click();
-            wait.until(driver1 -> !shadowHost.isDisplayed());
-        } catch (Exception e) {
+            wait.until(driver -> !shadowHost.isDisplayed());
+        } catch (Exception ignored) {
         }
 
         return this;
     }
 
-    
-    public void enterUsername(String username) {
-        wait.until(ExpectedConditions.visibilityOf(emailField));
-        emailField.clear();
-        emailField.sendKeys(username);
+    public LoginPage enterUsername(String username) {
+        type(emailField, username);
+        return this;
     }
-    
-    public void enterPassword(String password) {
-        passwordField.clear();
-        passwordField.sendKeys(password);
+
+    public LoginPage enterPassword(String password) {
+        type(passwordField, password);
+        return this;
     }
 
     public void clearFormFields() {
         emailField.clear();
         passwordField.clear();
     }
-    
-    public void clickLogin() {
-        loginButton.click();
+
+    public LoginPage clickLogin() {
+        click(loginButton);
+        return this;
     }
-    
+
     public String getLoginErrorMessage() {
-        wait.until(ExpectedConditions.visibilityOf(loginErrorMessage));
-        return loginErrorMessage.getText();
+        return getText(loginErrorMessage);
     }
-    
+
     public boolean isLoginPageDisplayed() {
-        return emailField.isDisplayed() && passwordField.isDisplayed();
+        return isVisible(emailField) && isVisible(passwordField);
     }
-    
+
     public HomePage loginWithValidCredentials(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-        clickLogin();
+        return enterUsername(username)
+            .enterPassword(password)
+            .clickLogin()
+            .navigateToHome();
+    }
+
+    private HomePage navigateToHome() {
         return new HomePage(driver);
     }
 }
