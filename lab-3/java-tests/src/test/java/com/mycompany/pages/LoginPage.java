@@ -10,10 +10,10 @@ import com.mycompany.util.AppUrls;
 
 public class LoginPage extends BasePage {
 
-    @FindBy(id = "username")
+    @FindBy(xpath = "//*[@id=\"username\"]")
     private WebElement emailField;
 
-    @FindBy(id = "password")
+    @FindBy(xpath = "//*[@id=\"password\"]")
     private WebElement passwordField;
 
     @FindBy(xpath = "//*[@id=\"javascript-content\"]/div[2]/main/div/div/form/button")
