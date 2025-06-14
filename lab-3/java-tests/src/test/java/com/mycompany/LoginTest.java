@@ -20,7 +20,7 @@ public class LoginTest extends TestBase {
     @Override
     public void setUp() {
         super.setUp();
-        loginPage = new LoginPage(getDriver()).acceptAllPrivacy();
+        loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
     }
 
     @Test

@@ -1,11 +1,8 @@
 package com.mycompany.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.mycompany.util.AppUrls;
 
 public class LoginPage extends BasePage {
@@ -25,23 +22,6 @@ public class LoginPage extends BasePage {
     public LoginPage(WebDriver driver) {
         super(driver);
         driver.get(AppUrls.LOGIN);
-    }
-
-    public LoginPage acceptAllPrivacy() {
-        try {
-            WebElement shadowHost = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.cssSelector("#usercentrics-root")
-            ));
-            SearchContext shadowRoot = shadowHost.getShadowRoot();
-            WebElement acceptButton = shadowRoot.findElement(
-                By.cssSelector("#uc-center-container > div.sc-eBMEME.gMirTG > div > div > div > button.sc-dcJsrY.eLOIWU")
-            );
-            acceptButton.click();
-            wait.until(driver -> !shadowHost.isDisplayed());
-        } catch (Exception ignored) {
-        }
-
-        return this;
     }
 
     public LoginPage enterUsername(String username) {
@@ -81,6 +61,6 @@ public class LoginPage extends BasePage {
     }
 
     private HomePage navigateToHome() {
-        return new HomePage(driver);
+        return new HomePage(super.getDriver());
     }
 }
