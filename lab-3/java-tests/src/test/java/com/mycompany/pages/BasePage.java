@@ -94,6 +94,14 @@ public abstract class BasePage {
         }
     }
 
+    protected boolean isLocatorVisible(By locator) {
+        try {
+            return getWait().until(ExpectedConditions.visibilityOfElementLocated(locator)) != null;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
+
     protected void waitForInvisibility(By locator) {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }

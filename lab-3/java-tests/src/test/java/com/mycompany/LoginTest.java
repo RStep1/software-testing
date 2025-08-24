@@ -28,7 +28,7 @@ public class LoginTest extends TestBase {
     public void givenValidCredentials_whenUserLogsIn_thenShouldNavigateToHomePage() {
         HomePage homePage = loginPage.loginWithValidCredentials("litspher@gmail.com", "c!63*eu#R/dD6:.");
         
-        assertEquals("Find the right job for you.", homePage.getWelcomeMessage(), "Welcome message does not match");
+        assertEquals("Tell the XING AI about the job you want", homePage.getWelcomeMessage(), "Welcome message does not match");
     }
 
     @Test

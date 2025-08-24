@@ -10,24 +10,16 @@ import com.mycompany.util.AppUrls;
 
 public class HomePage extends BasePage {
 
-    private By welcomeMessageLocator = By.xpath("//*[@id=\"content\"]/div/section/div/h1");
+    private By welcomeMessageLocator = By.xpath("/html/body/div[1]/div[2]/div/div/main/section[1]/div[1]/h1");
     private By goodbyHeaderLocator = By.xpath("//*[@id=\"javascript-content\"]/div/div[1]/main/div/p");
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div[2]/div/div/div[1]/header/section/div/nav/div[2]/div/div[5]/a")
-    private WebElement logoutButton;
+    private By logoutButtonLocator = By.xpath("//a[contains(@href, 'logout')]");
 
-    @FindBy(xpath = "//*[@id=\"app\"]/div/div[2]/div/div/div[1]/header/section/div/nav/div[2]/button/div/span/div/div[1]/div/img")
-    private WebElement profileImageButton;
 
+    private By profileImageButtonLocator = By.xpath("//button[contains(@class, 'me-menu-dropdown')]");
     private By jobTitleFieldLocator = By.xpath("//*[@id=\"keywords-input\"]");
     private By locationFieldLocator = By.xpath("//*[@id=\"location-input\"]");
-
-    // @FindBy(xpath = "//*[@id=\"keywords-input\"]")
-    // private WebElement jobTitleField;
-
-    // @FindBy(xpath = "//*[@id=\"location-input\"]")
-    // private WebElement locationField;
-
+    
     @FindBy(xpath = "//*[@id=\"content\"]/div/section/div/div/form/div[1]/div/button")
     private WebElement clearJobTitleFieldButton;
 
@@ -63,16 +55,22 @@ public class HomePage extends BasePage {
         return getText(welcomeMessageLocator);
     }
 
-    public boolean isLogoutButtonVisible() {
-        return isVisible(logoutButton);
-    }
+    // public boolean isLogoutButtonVisible() {
+    //     return isVisible(logoutButton);
+    // }
 
     public HomePage clickProfileImageButton() {
-        click(profileImageButton);
+        WebElement profileButton = getWait().until(ExpectedConditions.elementToBeClickable(profileImageButtonLocator));
+        click(profileButton);
+        
+        getWait().until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("/html/body/div[1]/div[2]/div/div/div[1]/header/section/div/nav/div[2]/div")
+        ));
         return this;
     }
 
     public HomePage clickLogoutButton() {
+        WebElement logoutButton = getWait().until(ExpectedConditions.elementToBeClickable(logoutButtonLocator));
         click(logoutButton);
         return this;
     }
@@ -128,9 +126,9 @@ public class HomePage extends BasePage {
         return !super.getDriver().findElements(locationLocator).isEmpty();
     }
 
-    public void clickProfileImage() {
-        click(profileImageButton);
-    }
+    // public void clickProfileImage() {
+    //     click(profileImageButton);
+    // }
 
     public boolean isProfileDropdownDisplayed() {
         By dropdownLocator = By.xpath("//*[@id=\"profile-dropdown\"]");
