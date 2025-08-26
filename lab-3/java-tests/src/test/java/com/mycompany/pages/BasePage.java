@@ -94,7 +94,7 @@ public abstract class BasePage {
         }
     }
 
-    protected boolean isLocatorVisible(By locator) {
+    protected boolean isElementLocatorVisible(By locator) {
         try {
             return getWait().until(ExpectedConditions.visibilityOfElementLocated(locator)) != null;
         } catch (TimeoutException e) {
@@ -116,6 +116,29 @@ public abstract class BasePage {
 
     protected WebDriverWait getWait() {
         return wait;
+    }
+
+    protected void waitForNewWindowAndSwitch(String originalWindowHandle) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        
+        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+        
+        for (String windowHandle : getDriver().getWindowHandles()) {
+            if (!windowHandle.equals(originalWindowHandle)) {
+                getDriver().switchTo().window(windowHandle);
+                break;
+            }
+        }
+        
+        waitForPageToLoad();
+    }
+    
+    protected void switchToWindow(String windowHandle) {
+        getDriver().switchTo().window(windowHandle);
+    }
+    
+    protected String getCurrentWindowHandle() {
+        return getDriver().getWindowHandle();
     }
 }
 
