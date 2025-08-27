@@ -14,7 +14,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.mycompany.base.TestBase;
+import com.mycompany.base.LocalTestBase;
 import com.mycompany.pages.HomePage;
 import com.mycompany.pages.JobDetailsPage;
 import com.mycompany.pages.LoginPage;
@@ -22,7 +22,7 @@ import com.mycompany.pages.SearchPage;
 import com.mycompany.util.AppUrls;
 
 @Disabled
-public class SearchTest extends TestBase {
+public class SearchTest extends LocalTestBase {
     private SearchPage searchPage;
     private final String TEST_JOB_TITLE = "Software Engineer";
     private final String TEST_LOCATION = "Berlin";

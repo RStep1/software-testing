@@ -1,6 +1,6 @@
 package com.mycompany;
 
-import com.mycompany.base.TestBase;
+import com.mycompany.base.LocalTestBase;
 import com.mycompany.pages.HomePage;
 import com.mycompany.pages.LoginPage;
 import com.mycompany.pages.SearchPage;
@@ -20,7 +20,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @Disabled
-public class HomeTest extends TestBase {
+public class HomeTest extends LocalTestBase {
     private HomePage homePage;
     
     @BeforeEach

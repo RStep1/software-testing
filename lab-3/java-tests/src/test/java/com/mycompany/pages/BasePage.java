@@ -2,6 +2,7 @@ package com.mycompany.pages;
 
 import java.time.Duration;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 
@@ -14,21 +15,36 @@ public abstract class BasePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
-
+    
     public BasePage acceptAllPrivacy() {
         try {
             WebElement shadowHost = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.cssSelector("#usercentrics-root")
             ));
+            Thread.sleep(1000);
             SearchContext shadowRoot = shadowHost.getShadowRoot();
-            WebElement acceptButton = shadowRoot.findElement(
-                By.cssSelector("#uc-center-container > div.sc-eBMEME.gMirTG > div > div > div > button.sc-dcJsrY.eLOIWU")
-            );
-            acceptButton.click();
-            wait.until(driver -> !shadowHost.isDisplayed());
-        } catch (Exception ignored) {
-        }
+            WebElement acceptButton = null;
+            try {
+                acceptButton = shadowRoot.findElement(
+                    By.cssSelector("button[data-testid='uc-accept-all-button']")
+                );
+            } catch (Exception e) {
+                acceptButton = shadowRoot.findElement(
+                    By.cssSelector("button:contains('Accept all'), button:contains('Accept All')")
+                );
+            }
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", acceptButton);
+            wait.until(ExpectedConditions.invisibilityOf(shadowHost));
 
+        } catch (Exception e) {
+            System.out.println("Privacy banner handling failed: " + e.getMessage());
+            try {
+                ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 100);");
+                new Actions(driver).moveByOffset(100, 100).click().perform();
+            } catch (Exception ex) {
+                System.out.println("Alternative method also failed: " + ex.getMessage());
+            }
+        }
         return this;
     }
 
@@ -44,8 +60,16 @@ public abstract class BasePage {
         });
     }
 
+    // protected void click(WebElement element) {
+    //     wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    // }
+
     protected void click(WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+        }
     }
 
     protected void type(WebElement element, String text) {

@@ -1,26 +1,29 @@
 package com.mycompany;
 
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.Parameters;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import java.net.MalformedURLException;
 
-import com.mycompany.base.TestBase;
+import com.mycompany.base.GridTestBase;
 import com.mycompany.pages.HomePage;
 import com.mycompany.pages.LoginPage;
 import com.mycompany.util.AppUrls;
 
-@Disabled
-public class LoginTest extends TestBase {
+@Ignore
+public class LoginTest extends GridTestBase {
     private LoginPage loginPage;
 
-    @BeforeEach
+    @Parameters({"browser"})
+    @BeforeMethod
     @Override
-    public void setUp() {
-        super.setUp();
+    public void setUp(String browser) throws MalformedURLException {
+        super.setUp(browser);
         loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
     }
 
