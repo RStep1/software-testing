@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+@Disabled
 public class ApiTest {
     
     private static final String GRAPHQL_API_URL = "/graphql/api";

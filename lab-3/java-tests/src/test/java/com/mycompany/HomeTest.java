@@ -1,6 +1,7 @@
 package com.mycompany;
 
 import com.mycompany.base.LocalTestBase;
+import com.mycompany.config.TestConfig;
 import com.mycompany.pages.HomePage;
 import com.mycompany.pages.LoginPage;
 import com.mycompany.pages.SearchPage;
@@ -22,6 +23,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @Disabled
 public class HomeTest extends LocalTestBase {
     private HomePage homePage;
+    private static final String TEST_USERNAME = TestConfig.getUsername();
+    private static final String TEST_PASSWORD = TestConfig.getPassword();
     
     @BeforeEach
     @Override
@@ -30,7 +33,7 @@ public class HomeTest extends LocalTestBase {
         
         if (homePage == null) {
             LoginPage loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
-            homePage = loginPage.loginWithValidCredentials("litspher@gmail.com", "c!63*eu#R/dD6:.");
+            homePage = loginPage.loginWithValidCredentials(TEST_USERNAME, TEST_PASSWORD);
         }
 
         try {

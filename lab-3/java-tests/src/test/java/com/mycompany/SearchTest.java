@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.mycompany.base.LocalTestBase;
+import com.mycompany.config.TestConfig;
 import com.mycompany.pages.HomePage;
 import com.mycompany.pages.JobDetailsPage;
 import com.mycompany.pages.LoginPage;
@@ -26,6 +27,8 @@ public class SearchTest extends LocalTestBase {
     private SearchPage searchPage;
     private final String TEST_JOB_TITLE = "Software Engineer";
     private final String TEST_LOCATION = "Berlin";
+    private static final String TEST_USERNAME = TestConfig.getUsername();
+    private static final String TEST_PASSWORD = TestConfig.getPassword();
     
     @BeforeEach
     @Override
@@ -34,7 +37,7 @@ public class SearchTest extends LocalTestBase {
         
         if (searchPage == null) {
             LoginPage loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
-            HomePage homePage = loginPage.loginWithValidCredentials("litspher@gmail.com", "c!63*eu#R/dD6:.");
+            HomePage homePage = loginPage.loginWithValidCredentials(TEST_USERNAME, TEST_PASSWORD);
             searchPage = homePage.clickInputBar();
         }
 

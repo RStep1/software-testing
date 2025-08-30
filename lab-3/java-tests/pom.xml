@@ -132,7 +132,7 @@
           <version>3.3.0</version>
           <configuration>
             <excludes>
-              <exclude>**/LoginTest.java</exclude>
+              <exclude>**/GridLoginTest.java</exclude>
             </excludes>
           </configuration>
           <dependencies>

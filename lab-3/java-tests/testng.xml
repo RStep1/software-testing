@@ -5,7 +5,7 @@
     <!-- <test name="Chrome Test">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="com.mycompany.LoginTest">
+            <class name="com.mycompany.GridLoginTest">
                 <methods>
                     <include name="givenValidCredentials_whenUserLogsIn_thenShouldNavigateToHomePage"/>
                     <include name="givenInvalidCredentials_whenUserLogsIn_thenShouldDisplayErrorMessage"/>
@@ -17,7 +17,7 @@
     <test name="Firefox Test">
         <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="com.mycompany.LoginTest">
+            <class name="com.mycompany.GridLoginTest">
                 <methods>
                     <include name="givenValidCredentials_whenUserLogsIn_thenShouldNavigateToHomePage"/>
                     <include name="givenInvalidCredentials_whenUserLogsIn_thenShouldDisplayErrorMessage"/>
@@ -29,7 +29,7 @@
     <test name="Edge Test">
         <parameter name="browser" value="edge"/>
         <classes>
-            <class name="com.mycompany.LoginTest">
+            <class name="com.mycompany.GridLoginTest">
                 <methods>
                     <include name="givenValidCredentials_whenUserLogsIn_thenShouldNavigateToHomePage"/>
                     <include name="givenInvalidCredentials_whenUserLogsIn_thenShouldDisplayErrorMessage"/>

@@ -1,48 +1,27 @@
 package com.mycompany;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
-import org.testng.annotations.Parameters;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
-
-import com.mycompany.base.GridTestBase;
-import com.mycompany.pages.HomePage;
+import com.mycompany.base.LocalTestBase;
+import com.mycompany.config.TestConfig;
 import com.mycompany.pages.LoginPage;
 import com.mycompany.util.AppUrls;
 
-@Ignore
-public class LoginTest extends GridTestBase {
+@Disabled
+public class LoginTest extends LocalTestBase {
     private LoginPage loginPage;
+    private static final String TEST_USERNAME = TestConfig.getUsername();
+    private static final String TEST_PASSWORD = TestConfig.getPassword();
 
-    @Parameters({"browser"})
-    @BeforeMethod
+    @BeforeEach
     @Override
-    public void setUp(String browser) throws MalformedURLException {
-        super.setUp(browser);
+    public void setUp() {
+        super.setUp();
         loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
-    }
-
-    @Test
-    public void givenValidCredentials_whenUserLogsIn_thenShouldNavigateToHomePage() {
-        HomePage homePage = loginPage.loginWithValidCredentials("litspher@gmail.com", "c!63*eu#R/dD6:.");
-        
-        assertEquals("Tell the XING AI about the job you want", homePage.getWelcomeMessage(), "Welcome message does not match");
-    }
-
-    @Test
-    public void givenInvalidCredentials_whenUserLogsIn_thenShouldDisplayErrorMessage() {
-        loginPage.enterUsername("invalidUser")
-            .enterPassword("wrongPass")
-            .clickLogin();
-
-        assertTrue(loginPage.isLoginPageDisplayed(), "Login page should be displayed");
-        assertEquals("Your username or password is incorrect. Please try again.", 
-                     loginPage.getLoginErrorMessage(), "Error message does not match");
     }
 
     @Test
@@ -53,7 +32,7 @@ public class LoginTest extends GridTestBase {
 
     @Test
     public void givenValidUsernameButEmptyPassword_whenUserAttemptsLogin_thenShouldStayOnLoginPage() {
-        loginPage.enterUsername("litspher@gmail.com")
+        loginPage.enterUsername(TEST_USERNAME)
             .clickLogin();
 
         assertEquals(AppUrls.LOGIN, getDriver().getCurrentUrl(), "Should stay on login page");
@@ -61,7 +40,7 @@ public class LoginTest extends GridTestBase {
 
     @Test
     public void givenEmptyUsernameButValidPassword_whenUserAttemptsLogin_thenShouldStayOnLoginPage() {
-        loginPage.enterPassword("c!63*eu#R/dD6:.")
+        loginPage.enterPassword(TEST_PASSWORD)
             .clickLogin();
 
         assertEquals(AppUrls.LOGIN, getDriver().getCurrentUrl(), "Should stay on login page");
