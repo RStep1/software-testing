@@ -15,6 +15,7 @@ public class HomePage extends BasePage {
     private static final By inputBarLocator = By.xpath("//a[contains(@class, 'fake-input')]");
     private static final By searchButtonLocator = By.xpath("//div[contains(@class, 'search-dropdown')]");
     private static final By popOverSearchOptionsLocator = By.xpath("//div[contains(@class, 'pop-over')]");
+    private static final By NETWORK_BUTTON_LOCATOR = By.xpath("//a[@data-testid='frame-vnav-members']");
     
     public HomePage(WebDriver driver) {
         super(driver);
@@ -23,6 +24,16 @@ public class HomePage extends BasePage {
     public static HomePage open(WebDriver driver) {
         driver.get(AppUrls.HOME);
         return new HomePage(driver);
+    }
+
+    public NetworkPage clickNetworkMemeberPage() {
+        WebElement networkButton = getWait().until(ExpectedConditions.elementToBeClickable(NETWORK_BUTTON_LOCATOR));
+        click(networkButton);
+        return navigateToNetworkPage();
+    }
+
+    private NetworkPage navigateToNetworkPage() {
+        return new NetworkPage(getDriver());
     }
 
     public String getWelcomeMessage() {
@@ -45,7 +56,7 @@ public class HomePage extends BasePage {
         return this;
     }
     
-    public SearchPage clickInputBar() {
+    public SearchJobPage clickInputBar() {
         WebElement inputBar = getWait().until(ExpectedConditions.elementToBeClickable(inputBarLocator));
         click(inputBar);
         return navigateToSearchPage();
@@ -57,8 +68,8 @@ public class HomePage extends BasePage {
         return this;
     }
 
-    private SearchPage navigateToSearchPage() {
-        return new SearchPage(super.getDriver());
+    private SearchJobPage navigateToSearchPage() {
+        return new SearchJobPage(super.getDriver());
     }
 
     public String getGoodbyMessage() {

@@ -19,12 +19,12 @@ import com.mycompany.config.TestConfig;
 import com.mycompany.pages.HomePage;
 import com.mycompany.pages.JobDetailsPage;
 import com.mycompany.pages.LoginPage;
-import com.mycompany.pages.SearchPage;
+import com.mycompany.pages.SearchJobPage;
 import com.mycompany.util.AppUrls;
 
 @Disabled
-public class SearchTest extends LocalTestBase {
-    private SearchPage searchPage;
+public class SearchJobTest extends LocalTestBase {
+    private SearchJobPage searchJobPage;
     private final String TEST_JOB_TITLE = "Software Engineer";
     private final String TEST_LOCATION = "Berlin";
     private static final String TEST_USERNAME = TestConfig.getUsername();
@@ -35,10 +35,10 @@ public class SearchTest extends LocalTestBase {
     public void setUp() {
         super.setUp();
         
-        if (searchPage == null) {
+        if (searchJobPage == null) {
             LoginPage loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
             HomePage homePage = loginPage.loginWithValidCredentials(TEST_USERNAME, TEST_PASSWORD);
-            searchPage = homePage.clickInputBar();
+            searchJobPage = homePage.clickInputBar();
         }
 
         try {
@@ -54,7 +54,7 @@ public class SearchTest extends LocalTestBase {
     }
 
     private void resetApplicationState() {
-        getDriver().get(AppUrls.SEARCH);
+        getDriver().get(AppUrls.SEARCH_JOB);
 
         new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(
             d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete")
@@ -63,58 +63,58 @@ public class SearchTest extends LocalTestBase {
     
     @Test
     public void givenSearchPage_whenSearchingWithValidJobTitle_thenResultsShouldBeDisplayed() {
-        searchPage.clearFindJobFormFields().searchForJob(TEST_JOB_TITLE, "");
-        assertTrue(searchPage.areResultsDisplayed());
+        searchJobPage.clearFindJobFormFields().searchForJob(TEST_JOB_TITLE, "");
+        assertTrue(searchJobPage.areResultsDisplayed());
     }
 
     @Test
     public void givenSearchPage_whenSearchingWithInvalidCriteria_thenNoResultsFound() {
-        searchPage.clearFindJobFormFields().searchForJob("InvalidJobTitleXYZ123", "");
+        searchJobPage.clearFindJobFormFields().searchForJob("InvalidJobTitleXYZ123", "");
 
-        assertEquals("No results found", searchPage.getResultsHeaderText());
+        assertEquals("No results found", searchJobPage.getResultsHeaderText());
     }
 
     @Test
     public void givenSearchPage_whenApplyingTopRatedFilter_thenFirstResultShouldBeDifferent() {
-        searchPage.searchForJob(TEST_JOB_TITLE, "");
+        searchJobPage.searchForJob(TEST_JOB_TITLE, "");
 
-        String firstJobBeforeFilter = searchPage.getFirstJobTitle();
-        searchPage.applyTopRatedFilter();
-        String firstJobAfterFilter = searchPage.getFirstJobTitle();
+        String firstJobBeforeFilter = searchJobPage.getFirstJobTitle();
+        searchJobPage.applyTopRatedFilter();
+        String firstJobAfterFilter = searchJobPage.getFirstJobTitle();
 
         assertFalse(firstJobBeforeFilter.equals(firstJobAfterFilter));
     }
 
     @Test
     public void givenSearchPage_whenSearchingWithLocation_thenResultsShouldContainLocation() {
-        searchPage.searchForJob(TEST_JOB_TITLE, TEST_LOCATION);
-        assertTrue(searchPage.areLocationResultsDisplayed(TEST_LOCATION));
+        searchJobPage.searchForJob(TEST_JOB_TITLE, TEST_LOCATION);
+        assertTrue(searchJobPage.areLocationResultsDisplayed(TEST_LOCATION));
     }
 
     @Test
     public void givenSearchPage_whenChangingSearchCriteria_thenResultsShouldUpdate() {
-        searchPage.searchForJob("Java Developer", "Munich");
-        String firstJobFirstSearch = searchPage.getFirstJobTitle();
+        searchJobPage.searchForJob("Java Developer", "Munich");
+        String firstJobFirstSearch = searchJobPage.getFirstJobTitle();
         
-        searchPage.searchForJob("Python Developer", "Zurich");
-        String firstJobSecondSearch = searchPage.getFirstJobTitle();
+        searchJobPage.searchForJob("Python Developer", "Zurich");
+        String firstJobSecondSearch = searchJobPage.getFirstJobTitle();
         
         assertFalse(firstJobFirstSearch.equals(firstJobSecondSearch));
     }
 
     @Test
     public void givenSearchPage_whenClickingOnFirstJob_thenJobDetailsPageShouldOpen() {
-        String firstJobTitle = searchPage.getFirstJobTitle();
+        String firstJobTitle = searchJobPage.getFirstJobTitle();
         String originalWindowHandle = getDriver().getWindowHandle();
 
-        JobDetailsPage jobDetailsPage = searchPage.clickFirstJob();
+        JobDetailsPage jobDetailsPage = searchJobPage.clickFirstJob();
 
         assertEquals(firstJobTitle, jobDetailsPage.getJobTitle(), 
                      "Job title should match the clicked result");
 
         jobDetailsPage.closeAndReturnToPreviousTab(originalWindowHandle);
 
-        assertTrue(searchPage.areResultsDisplayed(), 
+        assertTrue(searchJobPage.areResultsDisplayed(), 
                    "Should return to search results page");
     }
 }

@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class SearchPage extends BasePage {
+public class SearchJobPage extends BasePage {
     private static final By queryInputMenuLocator = By.xpath("//ul[contains(@id, 'query-input-menu')]");
     private static final By jobTitleFieldLocator = By.xpath("//*[@id=\"keywords-input\"]");
     private static final By locationFieldLocator = By.xpath("//*[@id=\"location-input\"]");
@@ -14,13 +14,13 @@ public class SearchPage extends BasePage {
     private static final By firstResultTitleLocator = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]//h2");
     private static final By firstResultLinkLocator = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]//a");
     
-    private static final  By clearJobTitleFieldButtonLocator = By.xpath("//*[@id='keywords-input']/following-sibling::button[@aria-label='Clear']");
-    private static final  By clearLocationFieldButtonLocator = By.xpath("//*[@id='location-input']/following-sibling::button[@aria-label='Clear']");
-    private static final  By searchJobButtonLocator = By.xpath("//button[@id='search-button']");
+    private static final By clearJobTitleFieldButtonLocator = By.xpath("//*[@id='keywords-input']/following-sibling::button[@aria-label='Clear']");
+    private static final By clearLocationFieldButtonLocator = By.xpath("//*[@id='location-input']/following-sibling::button[@aria-label='Clear']");
+    private static final By searchJobButtonLocator = By.xpath("//button[@id='search-button']");
     
     private static final By topRatedFirstFilterButtonLocator = By.xpath("//button[.//span[text()='Top-rated first']]");
 
-    public SearchPage(WebDriver driver) {
+    public SearchJobPage(WebDriver driver) {
         super(driver);
         waitForPageToLoad();
     }
@@ -29,18 +29,18 @@ public class SearchPage extends BasePage {
         return isElementLocatorVisible(queryInputMenuLocator);
     }
 
-    public SearchPage clearFindJobFormFields() {
+    public SearchJobPage clearFindJobFormFields() {
         return clickClearJobTitleFieldButton().clickClearLocationFieldButton();
     }
 
-    public SearchPage clickClearJobTitleFieldButton() {
+    public SearchJobPage clickClearJobTitleFieldButton() {
         if (!isFieldEmpty(jobTitleFieldLocator)) {
             click(getDriver().findElement(clearJobTitleFieldButtonLocator));
         }
         return this;
     }
 
-    public SearchPage clickClearLocationFieldButton() {
+    public SearchJobPage clickClearLocationFieldButton() {
         if (!isFieldEmpty(locationFieldLocator)) {
             click(getDriver().findElement(clearLocationFieldButtonLocator));
         }
@@ -88,7 +88,7 @@ public class SearchPage extends BasePage {
         return isElementLocatorVisible(jobTitleLocator);
     }
 
-    public SearchPage closeJobDetailsAndReturn() {
+    public SearchJobPage closeJobDetailsAndReturn() {
         if (getDriver().getWindowHandles().size() > 1) {
             getDriver().close();
             for (String handle : getDriver().getWindowHandles()) {

@@ -95,6 +95,18 @@ public abstract class BasePage {
         element.sendKeys(text);
     }
 
+    protected void typeAndPressEnter(By locator, String text) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        element.clear();
+        element.sendKeys(text);
+        element.sendKeys(Keys.ENTER);
+    }
+
+    protected void pressEnterOnElement(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        element.sendKeys(Keys.ENTER);
+    }
+
     protected boolean isFieldEmpty(By locator) {
         waitForElementToBeStable(locator);
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
