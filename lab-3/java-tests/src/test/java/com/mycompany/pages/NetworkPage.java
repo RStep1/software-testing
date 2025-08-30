@@ -11,6 +11,11 @@ public class NetworkPage extends BasePage {
         waitForPageToLoad();
     }
 
+    public SearchMemberPage searchMember(String memberName) {
+        typeAndPressEnter(SEARCH_MEMBER_INPUT_LOCATOR, memberName);
+        return navigateToSearchMemberPage();
+    }
+
     public SearchMemberPage searchWithEmptyQuery() {
         pressEnterOnElement(SEARCH_MEMBER_INPUT_LOCATOR);
         return navigateToSearchMemberPage();

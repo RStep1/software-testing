@@ -20,7 +20,8 @@ import com.mycompany.pages.SearchMemberPage;
 import com.mycompany.util.AppUrls;
 
 public class SearchMemberTest extends LocalTestBase {
-    private SearchMemberPage searchMemberPage;
+    // private SearchMemberPage searchMemberPage;
+    private NetworkPage networkPage;
 
     private static final String TEST_USERNAME = TestConfig.getUsername();
     private static final String TEST_PASSWORD = TestConfig.getPassword();
@@ -30,11 +31,10 @@ public class SearchMemberTest extends LocalTestBase {
     public void setUp() {
         super.setUp();
         
-        if (searchMemberPage == null) {
+        if (networkPage == null) {
             LoginPage loginPage = (LoginPage) new LoginPage(getDriver()).acceptAllPrivacy();
             HomePage homePage = loginPage.loginWithValidCredentials(TEST_USERNAME, TEST_PASSWORD);
-            NetworkPage networkPage = homePage.clickNetworkMemeberPage();
-            searchMemberPage = networkPage.searchWithEmptyQuery();
+            networkPage = homePage.clickNetworkMemeberPage();
         }
 
         try {
@@ -50,7 +50,7 @@ public class SearchMemberTest extends LocalTestBase {
     }
 
     private void resetApplicationState() {
-        getDriver().get(AppUrls.SEARCH_MEMBER);
+        getDriver().get(AppUrls.NETWORK);
 
         new WebDriverWait(getDriver(), Duration.ofSeconds(10)).until(
             d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete")
@@ -59,6 +59,7 @@ public class SearchMemberTest extends LocalTestBase {
 
     @Test
     public void test1() {
+        SearchMemberPage searchMemberPage = networkPage.searchMember("John");
         assertTrue(searchMemberPage.containsMembersFoundText());
     }
 }
