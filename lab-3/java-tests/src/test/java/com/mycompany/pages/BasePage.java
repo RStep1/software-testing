@@ -60,10 +60,6 @@ public abstract class BasePage {
         });
     }
 
-    // protected void click(WebElement element) {
-    //     wait.until(ExpectedConditions.elementToBeClickable(element)).click();
-    // }
-
     protected void click(WebElement element) {
         try {
             wait.until(ExpectedConditions.elementToBeClickable(element)).click();

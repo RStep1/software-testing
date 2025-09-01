@@ -2,29 +2,27 @@ package com.mycompany.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SearchJobPage extends BasePage {
-    private static final By queryInputMenuLocator = By.xpath("//ul[contains(@id, 'query-input-menu')]");
-    private static final By jobTitleFieldLocator = By.xpath("//*[@id=\"keywords-input\"]");
-    private static final By locationFieldLocator = By.xpath("//*[@id=\"location-input\"]");
-    private static final By resultsHeaderLocator = By.xpath("//div[contains(@class, 'results-header')]");
-    private static final By searchResultsListLocator = By.xpath("//ol/li[.//article[contains(@class, 'job-teaser-list-item')]]");
-    private static final By firstResultLocator = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]");
-    private static final By firstResultTitleLocator = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]//h2");
-    private static final By firstResultLinkLocator = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]//a");
+    private static final By QUERY_INPUT_MENU_LOCATOR = By.xpath("//ul[contains(@id, 'query-input-menu')]");
+    private static final By JOB_TITLE_FIELD_LOCATOR = By.xpath("//*[@id=\"keywords-input\"]");
+    private static final By LOCATION_FIELD_LOCATOR = By.xpath("//*[@id=\"location-input\"]");
+    private static final By RESULTS_HEADER_LOCATOR = By.xpath("//div[contains(@class, 'results-header')]");
+    private static final By SEARCH_RESULTS_LIST_LOCATOR = By.xpath("//ol/li[.//article[contains(@class, 'job-teaser-list-item')]]");
+    private static final By FIRST_RESULT_TITLE_LOCATOR = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]//h2");
+    private static final By FIRST_RESULT_LINK_LOCATOR = By.xpath("(//ol/li[.//article[contains(@class, 'job-teaser-list-item')]])[1]//a");
     
-    private static final By clearJobTitleFieldButtonLocator = By.xpath("//*[@id='keywords-input']/following-sibling::button[@aria-label='Clear']");
-    private static final By clearLocationFieldButtonLocator = By.xpath("//*[@id='location-input']/following-sibling::button[@aria-label='Clear']");
-    private static final By searchJobButtonLocator = By.xpath("//button[@id='search-button']");
+    private static final By CLEAR_JOB_TITLE_FIELD_BUTTON_LOCATOR = By.xpath("//*[@id='keywords-input']/following-sibling::button[@aria-label='Clear']");
+    private static final By CLEAR_LOCATION_FIELD_BUTTON_LOCATOR = By.xpath("//*[@id='location-input']/following-sibling::button[@aria-label='Clear']");
+    private static final By SEARCH_JOB_BUTTON_LOCATOR = By.xpath("//button[@id='search-button']");
     
-    private static final By topRatedFirstFilterButtonLocator = By.xpath("//button[.//span[text()='Top-rated first']]");
-    private static final By partTimeFilterLocator = By.xpath("//button[.//span[text()='Part-time']]");
-    private static final By fullTimeFilterLocator = By.xpath("//button[.//span[text()='Full-time']]");
-    private static final By studentInternFilterLocator = By.xpath("//button[.//span[text()='Student/Intern']]");
-    private static final By entryLevelFilterLocator = By.xpath("//button[.//span[text()='Entry Level']]");
-    private static final By professionalExperiencedFilterLocator = By.xpath("//button[.//span[text()='Professional/Experienced']]");
+    private static final By TOP_RATED_FIRST_FILTER_BUTTON_LOCATOR = By.xpath("//button[.//span[text()='Top-rated first']]");
+    private static final By PART_TIME_FILTER_LOCATOR = By.xpath("//button[.//span[text()='Part-time']]");
+    private static final By FULL_TIME_FILTER_LOCATOR = By.xpath("//button[.//span[text()='Full-time']]");
+    private static final By STUDENT_INTERN_FILTER_LOCATOR = By.xpath("//button[.//span[text()='Student/Intern']]");
+    private static final By ENTRY_LEVEL_FILTER_LOCATOR = By.xpath("//button[.//span[text()='Entry Level']]");
+    private static final By PROFESSIONAL_EXPERIENCED_FILTER_LOCATOR = By.xpath("//button[.//span[text()='Professional/Experienced']]");
 
     public SearchJobPage(WebDriver driver) {
         super(driver);
@@ -32,7 +30,7 @@ public class SearchJobPage extends BasePage {
     }
 
     public boolean isQueryInputMenuDisplayed() {
-        return isElementLocatorVisible(queryInputMenuLocator);
+        return isElementLocatorVisible(QUERY_INPUT_MENU_LOCATOR);
     }
 
     public SearchJobPage clearFindJobFormFields() {
@@ -40,62 +38,62 @@ public class SearchJobPage extends BasePage {
     }
 
     public SearchJobPage clickClearJobTitleFieldButton() {
-        if (!isFieldEmpty(jobTitleFieldLocator)) {
-            click(getDriver().findElement(clearJobTitleFieldButtonLocator));
+        if (!isFieldEmpty(JOB_TITLE_FIELD_LOCATOR)) {
+            click(getDriver().findElement(CLEAR_JOB_TITLE_FIELD_BUTTON_LOCATOR));
         }
         return this;
     }
 
     public SearchJobPage clickClearLocationFieldButton() {
-        if (!isFieldEmpty(locationFieldLocator)) {
-            click(getDriver().findElement(clearLocationFieldButtonLocator));
+        if (!isFieldEmpty(LOCATION_FIELD_LOCATOR)) {
+            click(getDriver().findElement(CLEAR_LOCATION_FIELD_BUTTON_LOCATOR));
         }
         return this;
     }
 
     public void searchForJob(String jobTitle, String location) {
-        safeType(jobTitleFieldLocator, jobTitle);
-        safeType(locationFieldLocator, location);
-        click(getDriver().findElement(searchJobButtonLocator));
+        safeType(JOB_TITLE_FIELD_LOCATOR, jobTitle);
+        safeType(LOCATION_FIELD_LOCATOR, location);
+        click(getDriver().findElement(SEARCH_JOB_BUTTON_LOCATOR));
         waitForResultsRefresh();
     }
 
     public boolean areResultsDisplayed() {
-        return isElementLocatorVisible(resultsHeaderLocator);
+        return isElementLocatorVisible(RESULTS_HEADER_LOCATOR);
     }
 
     public void applyTopRatedFilter() {
-        click(getDriver().findElement(topRatedFirstFilterButtonLocator));
+        click(getDriver().findElement(TOP_RATED_FIRST_FILTER_BUTTON_LOCATOR));
         waitForResultsRefresh();
     }
 
     public void applyPartTimeFilter() {
-        click(getDriver().findElement(partTimeFilterLocator));
+        click(getDriver().findElement(PART_TIME_FILTER_LOCATOR));
         waitForResultsRefresh();
     }
     
     public void applyFullTimeFilter() {
-        click(getDriver().findElement(fullTimeFilterLocator));
+        click(getDriver().findElement(FULL_TIME_FILTER_LOCATOR));
         waitForResultsRefresh();
     }
     
     public void applyStudentInternFilter() {
-        click(getDriver().findElement(studentInternFilterLocator));
+        click(getDriver().findElement(STUDENT_INTERN_FILTER_LOCATOR));
         waitForResultsRefresh();
     }
     
     public void applyEntryLevelFilter() {
-        click(getDriver().findElement(entryLevelFilterLocator));
+        click(getDriver().findElement(ENTRY_LEVEL_FILTER_LOCATOR));
         waitForResultsRefresh();
     }
 
     public void applyProfessionalExperiencedFilter() {
-        click(getDriver().findElement(professionalExperiencedFilterLocator));
+        click(getDriver().findElement(PROFESSIONAL_EXPERIENCED_FILTER_LOCATOR));
         waitForResultsRefresh();
     }
 
     public String getFirstJobTitle() {
-        return getText(firstResultTitleLocator);
+        return getText(FIRST_RESULT_TITLE_LOCATOR);
     }
 
     public boolean areLocationResultsDisplayed(String location) {
@@ -104,12 +102,12 @@ public class SearchJobPage extends BasePage {
     }
 
     public int getResultsCount() {
-        return getDriver().findElements(searchResultsListLocator).size();
+        return getDriver().findElements(SEARCH_RESULTS_LIST_LOCATOR).size();
     }
 
     public JobDetailsPage clickFirstJob() {
         String originalWindowHandle = getDriver().getWindowHandle();
-        click(getDriver().findElement(firstResultLinkLocator));
+        click(getDriver().findElement(FIRST_RESULT_LINK_LOCATOR));
         waitForNewWindowAndSwitch(originalWindowHandle);
         return new JobDetailsPage(getDriver());
     }
@@ -137,6 +135,6 @@ public class SearchJobPage extends BasePage {
     }
 
     public String getResultsHeaderText() {
-        return getText(resultsHeaderLocator);
+        return getText(RESULTS_HEADER_LOCATOR);
     }
 }

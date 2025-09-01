@@ -14,8 +14,6 @@ public class SearchMemberPage extends BasePage {
         By.xpath("//button[.//span[contains(text(), 'Direct contacts')]]");
     private static final By SEARCH_RESULTS_LIST_LOCATOR = 
         By.xpath("//ol[@data-testid='search-list']");
-    private static final By RESULT_FIRST_MEMBER_LOCATOR = 
-        By.xpath("(//ol[@data-testid='search-list']//li[.//div[@data-testid='members-search-result-item']])[1]");
     private static final By RESULT_FIRST_MEMBER_NAME_LOCATOR = 
         By.xpath("(//ol[@data-testid='search-list']//li[.//div[@data-testid='members-search-result-item']]//h2[@data-xds='Headline'])[1]");
     private static final By RESULT_FIRST_MEMBER_LOCATION_LOCATOR = 
