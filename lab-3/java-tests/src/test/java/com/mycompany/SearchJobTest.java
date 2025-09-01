@@ -117,4 +117,48 @@ public class SearchJobTest extends LocalTestBase {
         assertTrue(searchJobPage.areResultsDisplayed(), 
                    "Should return to search results page");
     }
+
+    @Test
+    public void givenSearchPage_whenSearchingWithLocationOnly_thenResultsShouldBeDisplayed() {
+        String location = "Munich";
+        
+        searchJobPage.searchForJob("", location);
+        
+        assertTrue(searchJobPage.areResultsDisplayed());
+        assertTrue(searchJobPage.areLocationResultsDisplayed(location));
+    }
+
+    @Test
+    public void givenSearchPage_whenApplyingPartTimeFilter_thenResultsShouldChange() {
+        searchJobPage.searchForJob("Developer", "Berlin");
+        
+        String firstJobBeforeFilter = searchJobPage.getFirstJobTitle();
+        searchJobPage.applyPartTimeFilter();
+        String firstJobAfterFilter = searchJobPage.getFirstJobTitle();
+        
+        assertFalse(firstJobBeforeFilter.equals(firstJobAfterFilter));
+    }
+
+    @Test
+    public void givenSearchPage_whenApplyingFullTimeFilter_thenResultsShouldBeRelevant() {
+        searchJobPage.searchForJob("Engineer", "Hamburg");
+        
+        String firstJobBeforeFilter = searchJobPage.getFirstJobTitle();
+        searchJobPage.applyFullTimeFilter();
+        searchJobPage.applyProfessionalExperiencedFilter();
+        String firstJobAfterFilter = searchJobPage.getFirstJobTitle();
+        
+        assertFalse(firstJobBeforeFilter.equals(firstJobAfterFilter));
+    }
+
+    @Test
+    public void givenSearchPage_whenApplyingStudentInternFilter_thenShouldShowEntryLevelPositions() {
+        searchJobPage.searchForJob("IT", "Cologne");
+        
+        String firstJobBeforeFilter = searchJobPage.getFirstJobTitle();
+        searchJobPage.applyStudentInternFilter();
+        String firstJobAfterFilter = searchJobPage.getFirstJobTitle();
+        
+        assertFalse(firstJobBeforeFilter.equals(firstJobAfterFilter));
+    }
 }

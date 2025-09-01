@@ -2,6 +2,7 @@ package com.mycompany.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SearchJobPage extends BasePage {
@@ -19,6 +20,11 @@ public class SearchJobPage extends BasePage {
     private static final By searchJobButtonLocator = By.xpath("//button[@id='search-button']");
     
     private static final By topRatedFirstFilterButtonLocator = By.xpath("//button[.//span[text()='Top-rated first']]");
+    private static final By partTimeFilterLocator = By.xpath("//button[.//span[text()='Part-time']]");
+    private static final By fullTimeFilterLocator = By.xpath("//button[.//span[text()='Full-time']]");
+    private static final By studentInternFilterLocator = By.xpath("//button[.//span[text()='Student/Intern']]");
+    private static final By entryLevelFilterLocator = By.xpath("//button[.//span[text()='Entry Level']]");
+    private static final By professionalExperiencedFilterLocator = By.xpath("//button[.//span[text()='Professional/Experienced']]");
 
     public SearchJobPage(WebDriver driver) {
         super(driver);
@@ -60,6 +66,31 @@ public class SearchJobPage extends BasePage {
 
     public void applyTopRatedFilter() {
         click(getDriver().findElement(topRatedFirstFilterButtonLocator));
+        waitForResultsRefresh();
+    }
+
+    public void applyPartTimeFilter() {
+        click(getDriver().findElement(partTimeFilterLocator));
+        waitForResultsRefresh();
+    }
+    
+    public void applyFullTimeFilter() {
+        click(getDriver().findElement(fullTimeFilterLocator));
+        waitForResultsRefresh();
+    }
+    
+    public void applyStudentInternFilter() {
+        click(getDriver().findElement(studentInternFilterLocator));
+        waitForResultsRefresh();
+    }
+    
+    public void applyEntryLevelFilter() {
+        click(getDriver().findElement(entryLevelFilterLocator));
+        waitForResultsRefresh();
+    }
+
+    public void applyProfessionalExperiencedFilter() {
+        click(getDriver().findElement(professionalExperiencedFilterLocator));
         waitForResultsRefresh();
     }
 
