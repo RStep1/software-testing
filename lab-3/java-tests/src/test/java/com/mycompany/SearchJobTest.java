@@ -25,8 +25,8 @@ import com.mycompany.util.AppUrls;
 @Disabled
 public class SearchJobTest extends LocalTestBase {
     private SearchJobPage searchJobPage;
-    private final String TEST_JOB_TITLE = "Software Engineer";
-    private final String TEST_LOCATION = "Berlin";
+    private static final String TEST_JOB_TITLE = "Software Engineer";
+    private static final String TEST_LOCATION = "Berlin";
     private static final String TEST_USERNAME = TestConfig.getUsername();
     private static final String TEST_PASSWORD = TestConfig.getPassword();
     

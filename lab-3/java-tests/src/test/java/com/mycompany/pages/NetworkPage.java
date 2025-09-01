@@ -22,6 +22,9 @@ public class NetworkPage extends BasePage {
     }
     
     private SearchMemberPage navigateToSearchMemberPage() {
-        return new SearchMemberPage(getDriver());
+        // return new SearchMemberPage(getDriver());
+        SearchMemberPage searchMemberPage = new SearchMemberPage(getDriver());
+        waitForPageToLoad();
+        return searchMemberPage;
     }
 }
