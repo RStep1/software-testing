@@ -25,7 +25,18 @@ import com.mycompany.pages.NetworkPage;
 import com.mycompany.pages.SearchMemberPage;
 import com.mycompany.util.AppUrls;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
+import io.qameta.allure.junit5.AllureJunit5;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+
 @Disabled
+@ExtendWith(AllureJunit5.class)
+@Epic("Network")
+@Feature("Member Search Functionality")
 public class SearchMemberTest extends LocalTestBase {
     private NetworkPage networkPage;
 
@@ -34,6 +45,7 @@ public class SearchMemberTest extends LocalTestBase {
     
     @BeforeEach
     @Override
+    @Step("Setup test environment and navigate to network page")
     public void setUp() {
         super.setUp();
         
@@ -48,13 +60,16 @@ public class SearchMemberTest extends LocalTestBase {
             wait.until(ExpectedConditions.urlContains("network"));
         } catch (TimeoutException e) {
             if (getDriver().getCurrentUrl().contains("login")) {
+                takeScreenshot("login-failed-network");
                 throw new RuntimeException("Login failed - still on login page");
             }
         }
 
         resetApplicationState();
+        allureAddEnvironmentInfo("Network URL", AppUrls.NETWORK);
     }
 
+    @Step("Reset application state")
     private void resetApplicationState() {
         getDriver().get(AppUrls.NETWORK);
 
@@ -65,6 +80,7 @@ public class SearchMemberTest extends LocalTestBase {
 
     @ParameterizedTest
     @ValueSource(strings = {"John", "Stephan", "Müller", "Alexander"})
+    @Description("Test member search with different valid names")
     public void givenValidMemberName_whenSearchingMembers_thenShouldDisplayCorrectNameInResults(String memberName) {
         SearchMemberPage searchMemberPage = networkPage.searchMember(memberName);
         
@@ -74,9 +90,12 @@ public class SearchMemberTest extends LocalTestBase {
         String resultName = searchMemberPage.getFirstMemberName();
         assertNotNull(resultName);
         assertTrue(resultName.contains(memberName));
+        takeScreenshot("member-search-" + memberName);
+        allureAddLog("Member search completed for: " + memberName);
     }
 
     @Test
+    @Description("Test member search with empty query")
     public void givenSearchWithEmptyQuery_whenSearchingMembers_thenResultShouldBeEmpty() {
         SearchMemberPage searchMemberPage = networkPage.searchWithEmptyQuery();
         String memberText = searchMemberPage.getMemberFoundText();
@@ -85,26 +104,35 @@ public class SearchMemberTest extends LocalTestBase {
         searchMemberPage.waitForPageToLoad();
         
         assertEquals(memberText, "No members found");
+        takeScreenshot("empty-query-search");
+        allureAddLog("Empty query search executed - no members found");
     }
 
     @Test
+    @Description("Test member search with invalid name")
     public void givenInvalidMemberName_whenSearchingMembers_thenShouldDisplayNoResultsMessage() {
         String invalidName = "NonexistentUser12345";
         
         SearchMemberPage searchMemberPage = networkPage.searchMember(invalidName);
         
         assertEquals(searchMemberPage.getMemberFoundText(), "No members found");
+        takeScreenshot("invalid-member-search");
+        allureAddLog("Invalid member search: " + invalidName);
     }
 
     @Test
+    @Description("Test availability of search filters")
     public void givenSearchResultsDisplayed_whenCheckingFilters_thenShouldShowNewestAndDirectContactsFilters() {
         SearchMemberPage searchMemberPage = networkPage.searchWithEmptyQuery();
         
         assertTrue(searchMemberPage.isNewestFilterDisplayed());
         assertTrue(searchMemberPage.isDirectContactsFilterDisplayed());
+        takeScreenshot("search-filters-displayed");
+        allureAddLog("Search filters are displayed correctly");
     }
 
     @Test
+    @Description("Test newest filter functionality")
     public void givenSearchResultsDisplayed_whenClickingNewestFilter_thenShouldActivateNewestFilter() {
         SearchMemberPage searchMemberPage = networkPage.searchWithEmptyQuery();
         
@@ -112,9 +140,12 @@ public class SearchMemberTest extends LocalTestBase {
         
         assertTrue(searchMemberPage.isNewestFilterActive());
         assertFalse(searchMemberPage.isDirectContactsFilterActive());
+        takeScreenshot("newest-filter-active");
+        allureAddLog("Newest filter activated successfully");
     }
 
     @Test
+    @Description("Test direct contacts filter functionality")
     public void givenSearchResultsDisplayed_whenClickingDirectContactsFilter_thenShouldActivateDirectContactsFilter() {
         SearchMemberPage searchMemberPage = networkPage.searchWithEmptyQuery();
         
@@ -122,13 +153,18 @@ public class SearchMemberTest extends LocalTestBase {
         
         assertTrue(searchMemberPage.isDirectContactsFilterActive());
         assertFalse(searchMemberPage.isNewestFilterActive());
+        takeScreenshot("direct-contacts-filter-active");
+        allureAddLog("Direct contacts filter activated successfully");
     }
 
     @Test
+    @Description("Test navigation to homepage from search results")
     public void givenSearchPerformed_whenClickOnGoToHomepage_thenSouldDisplayHomepage() {
         SearchMemberPage searchMemberPage = networkPage.searchMember("Thomas");
         HomePage homePage = searchMemberPage.clickGoToHomepage();
 
         assertEquals(homePage.getWelcomeMessage(), "Tell the XING AI about the job you want");
+        takeScreenshot("homepage-navigation-from-search");
+        allureAddLog("Navigated to homepage from search results");
     }
 }

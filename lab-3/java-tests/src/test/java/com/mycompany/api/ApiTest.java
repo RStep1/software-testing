@@ -15,7 +15,18 @@ import java.util.stream.Stream;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import io.qameta.allure.Attachment;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
+import io.qameta.allure.junit5.AllureJunit5;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 @Disabled
+@ExtendWith(AllureJunit5.class)
+@Epic("API Testing")
+@Feature("GraphQL Job Search API")
 public class ApiTest {
     
     private static final String GRAPHQL_API_URL = "/graphql/api";
@@ -30,14 +41,17 @@ public class ApiTest {
     private static final String ENTRY_LEVEL_ID = "2.24d1f6";
     private static final String EXPERIENCED_ID = "3.2ebf16";
     private static final String TECH_INDUSTRY_ID = "90000.597414";
-    // private static final String SOFTWARE_INDUSTRY_ID = "90100.a8b7b7";
     
     @BeforeAll
+    @Step("Setup API test configuration")
     static void setup() {
         RestAssured.baseURI = "https://www.xing.com";
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        allureAddEnvironmentInfo("API Base URL", "https://www.xing.com");
+        allureAddEnvironmentInfo("GraphQL Endpoint", GRAPHQL_API_URL);
     }
     
+    @Step("Build GraphQL query for job search with keywords: {keywords}, location: {location}")
     private String buildGraphQLJobSearchQuery(String keywords, String location, 
                                      Map<String, String> filters, 
                                      String fields, int limit, int offset) {
@@ -70,6 +84,7 @@ public class ApiTest {
         """, keywords, location, filterBuilder, CONSUMER, limit, offset, fields);
     }
     
+    @Step("Execute GraphQL query and validate response")
     private void executeGraphQLQuery(String graphqlBody) {
         given()
             .contentType("application/json")
@@ -95,6 +110,7 @@ public class ApiTest {
     
     @ParameterizedTest
     @MethodSource("jobSearchParameters")
+    @Description("Test basic job search with different job titles and locations")
     void testBasicSearch(String jobTitle, String location) {
         String query = buildGraphQLJobSearchQuery(
             jobTitle, 
@@ -105,9 +121,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Search completed for: " + jobTitle + " in " + location);
     }
 
     @Test
+    @Description("Test remote job search functionality")
     void testRemoteJobs() {
         String query = buildGraphQLJobSearchQuery(
             "developer", 
@@ -118,9 +136,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Remote jobs search executed with FULL_REMOTE filter");
     }
 
     @Test
+    @Description("Test part-time remote job search")
     void testPartTimeRemoteJobs() {
         String query = buildGraphQLJobSearchQuery(
             "java", 
@@ -134,9 +154,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Part-time remote jobs search executed");
     }
 
     @Test
+    @Description("Test senior level job search")
     void testSeniorLevelJobs() {
         String query = buildGraphQLJobSearchQuery(
             "engineer", 
@@ -147,9 +169,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Senior level jobs search executed");
     }
 
     @Test
+    @Description("Test technology industry job search")
     void testTechnologyIndustry() {
         String query = buildGraphQLJobSearchQuery(
             "developer", 
@@ -160,9 +184,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Technology industry jobs search executed");
     }
 
     @Test
+    @Description("Test full-time job search")
     void testFullTimeJobs() {
         String query = buildGraphQLJobSearchQuery(
             "software engineer", 
@@ -173,9 +199,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Full-time jobs search executed");
     }
 
     @Test
+    @Description("Test hybrid work job search")
     void testHybridJobs() {
         String query = buildGraphQLJobSearchQuery(
             "project manager", 
@@ -186,9 +214,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Hybrid jobs search executed");
     }
 
     @Test
+    @Description("Test entry-level job search")
     void testEntryLevelJobs() {
         String query = buildGraphQLJobSearchQuery(
             "developer", 
@@ -199,9 +229,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Entry-level jobs search executed");
     }
 
     @Test
+    @Description("Test job search with multiple filters combination")
     void testMultipleFiltersCombination() {
         String query = buildGraphQLJobSearchQuery(
             "data scientist", 
@@ -216,9 +248,11 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Multiple filters combination search executed");
     }
 
     @Test
+    @Description("Test job search without keywords")
     void testSearchWithoutKeywords() {
         String query = buildGraphQLJobSearchQuery(
             "", 
@@ -229,10 +263,12 @@ public class ApiTest {
             0
         );
         executeGraphQLQuery(query);
+        allureAddLog("Search without keywords executed");
     }
 
     @Disabled("for debugging")
     @Test
+    @Description("Debug available filters in the system")
     void debugAvailableFilters() {
         String graphqlBody = """
         {
@@ -263,13 +299,23 @@ public class ApiTest {
             .extract()
             .response();
 
-        System.out.println("Available employment types: " + 
+        allureAddLog("Available employment types: " + 
             response.jsonPath().getString("data.jobSearchByQuery.aggregations.employmentTypes"));
-        System.out.println("Available remote options: " + 
+        allureAddLog("Available remote options: " + 
             response.jsonPath().getString("data.jobSearchByQuery.aggregations.remoteOptions"));
-        System.out.println("Available career levels: " + 
+        allureAddLog("Available career levels: " + 
             response.jsonPath().getString("data.jobSearchByQuery.aggregations.careerLevels"));
-        System.out.println("Available industries: " + 
+        allureAddLog("Available industries: " + 
             response.jsonPath().getString("data.jobSearchByQuery.aggregations.industries"));
+    }
+
+    @Attachment(value = "Environment Info", type = "text/plain")
+    private static String allureAddEnvironmentInfo(String key, String value) {
+        return key + ": " + value;
+    }
+
+    @Attachment(value = "Execution Log", type = "text/plain")
+    private String allureAddLog(String message) {
+        return message;
     }
 }

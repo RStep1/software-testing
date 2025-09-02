@@ -1,11 +1,14 @@
 package com.mycompany.base;
 
+import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
 import org.openqa.selenium.MutableCapabilities;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -14,8 +17,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
+
 public class GridTestBase {
-    protected WebDriver driver;
+    private WebDriver driver;
     private static final String GRID_HUB_URL = "http://localhost:4444/wd/hub";
 
     @Parameters({"browser"})
@@ -71,5 +77,26 @@ public class GridTestBase {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public String getGridHubUrl() {
+        return GRID_HUB_URL;    
+    }
+
+    protected void takeScreenshot(String name) {
+        if (getDriver() instanceof TakesScreenshot) {
+            byte[] screenshot = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);
+            Allure.addAttachment(name, new ByteArrayInputStream(screenshot));
+        }
+    }
+
+    @Attachment(value = "Environment Info", type = "text/plain")
+    protected String allureAddEnvironmentInfo(String key, String value) {
+        return key + ": " + value;
+    }
+
+    @Attachment(value = "Execution Log", type = "text/plain")
+    protected String allureAddLog(String message) {
+        return message;
     }
 }
