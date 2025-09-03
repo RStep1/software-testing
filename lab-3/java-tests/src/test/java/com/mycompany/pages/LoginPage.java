@@ -61,6 +61,8 @@ public class LoginPage extends BasePage {
     }
 
     private HomePage navigateToHome() {
-        return new HomePage(super.getDriver());
+        HomePage homePage = new HomePage(getDriver());
+        waitForPageToLoad();
+        return homePage;
     }
 }
