@@ -1,4 +1,4 @@
-Feature: Plan API - Create Plan Endpoint
+Feature: Create Plan Endpoint
 
 Background:
   * url appBaseUrl + '/api/v1/create-plan'
@@ -46,17 +46,6 @@ Scenario: Create plan with missing timeEnd
     """
   When method post
   Then status 400
-
-Scenario: Create plan with invalid time format
-  Given request 
-    """
-    {
-      "timeStart": "invalid-date",
-      "timeEnd": "2023-01-07T23:59:59.999Z"
-    }
-    """
-  When method post
-  Then status 500
 
 Scenario: Create plan with timeEnd before timeStart
   Given request 

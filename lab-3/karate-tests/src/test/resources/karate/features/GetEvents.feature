@@ -1,4 +1,4 @@
-Feature: Event API - Get Events Endpoint
+Feature: Get Events Endpoint
 
 Background:
   * url appBaseUrl + '/api/v1/get-events'
