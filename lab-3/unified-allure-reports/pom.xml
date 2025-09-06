@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.company</groupId>
+    <artifactId>unified-allure-reports</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    
+    <properties>
+        <allure.version>2.29.1</allure.version>
+        <project.root>/home/stepan/Documents/itmo/3_course/software-testing/lab-3</project.root>
+    </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-results</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <target>
+                                <echo>Copying test results...</echo>
+                                <mkdir dir="${project.build.directory}/allure-results"/>
+                                
+                                <copy todir="${project.build.directory}/allure-results" failonerror="false">
+                                    <fileset dir="${project.root}/karate-tests/target/allure-results"/>
+                                </copy>
+                                
+                                <copy todir="${project.build.directory}/allure-results" failonerror="false">
+                                    <fileset dir="${project.root}/java-tests/allure-results"/>
+                                </copy>
+                                
+                                <echo>Copied files:</echo>
+                                <fileset id="copiedFiles" dir="${project.build.directory}/allure-results"/>
+                                <pathconvert pathsep="${line.separator}   - " property="files.list" refid="copiedFiles"/>
+                                <echo>   - ${files.list}</echo>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>serve-report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>serve</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.15.2</version>
+                <configuration>
+                    <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                    <reportDirectory>${project.build.directory}/unified-report</reportDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
