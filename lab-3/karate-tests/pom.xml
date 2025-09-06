@@ -20,6 +20,8 @@
     <junit.version>5.11.0</junit.version>
     <flyway.version>11.11.2</flyway.version>
     <slf4j.version>2.0.17</slf4j.version>
+    <allure.version>2.29.1</allure.version>
+    <aspectj.version>1.9.22</aspectj.version>
   </properties>
 
   <dependencyManagement>
@@ -116,6 +118,27 @@
       <version>${flyway.version}</version>
       <scope>runtime</scope>
     </dependency>
+
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-junit5</artifactId>
+        <version>${allure.version}</version>
+        <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-karate</artifactId>
+        <version>${allure.version}</version>
+        <scope>test</scope>
+    </dependency>
+    
+    <!-- <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-attachments</artifactId>
+        <version>${allure.version}</version>
+        <scope>test</scope>
+    </dependency> -->
   </dependencies>
 
   <build>
@@ -179,5 +202,42 @@
             </includes>
         </testResource>
     </testResources>
+
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+                <argLine>
+                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                </argLine>
+                <systemProperties>
+                    <property>
+                        <name>allure.results.directory</name>
+                        <value>${project.build.directory}/allure-results</value>
+                    </property>
+                </systemProperties>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                    <version>${aspectj.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+        
+        <plugin>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-maven</artifactId>
+            <version>2.15.2</version>
+            <configuration>
+                <reportVersion>2.34.1</reportVersion>
+                <resultsDirectory>${project.build.directory}/allure-results</resultsDirectory>
+                <reportDirectory>${project.build.directory}/allure-report</reportDirectory>
+            </configuration>
+        </plugin>
+    </plugins>
   </build>
 </project>
